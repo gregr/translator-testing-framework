@@ -1,0 +1,63 @@
+Will's notes on running the `behave` tests for mediKanren, since much of the README from the forked repo isn't applicable to us.  I've paraphrased some of Greg's comments as well.
+
+----------------------------------
+
+
+Clone this repository,
+
+```
+git clone --recursive git@github.com:gregr/translator-testing-framework.git
+```
+
+After cloning the repo, set up a virtual environment using Python 3's `venv` module
+
+```
+python3 -m venv venv
+```
+
+The command creates a virtual environment `venv`, which may be activated by typing:
+
+```
+source venv/bin/activate
+```
+
+To exit the environment, type:
+
+```
+deactivate
+```
+
+To reenter, source the activate command again.
+
+
+Now install required packages, using a safer way to execute `pip`: 
+
+```
+python3 -m pip install -r requirements.txt --no-cache-dir
+```
+
+The `--no-cache-dir` flag ensures that the latest git repositories of special dependency projects are imported each 
+time this command is run, given the "research and development" nature of this testing repo.
+
+Note that given the rapid cycles of development of the various NCATS projects being covered by Behave tests, it is 
+advisable to periodically rerun the pip module installation process to ensure access to the latest synchronized code, 
+especially after a `git pull` operation is done.
+
+
+
+Run the behave tests from the terminal you just set up using the steps above, with the command:
+
+behave -i features/medikanren-tests.feature --no-capture --no-capture-stderr
+
+Those no-capture flags are optional, but necessary if you want to use print debugging
+
+Note that the `translator-web-server` from within the `mediKanren/biolink` directory must be running in another terminal (without any of the special setup above):
+
+racket translator-web-server.rkt
+
+
+You can add new tests by adding `Scenarios` to
+
+translator-testing-framework/features/medikanren-tests.feature
+
+The natural language specs are incredibly fragile, so try to get the wording exactly right.  In that last line of the original test, n02 and UMLS:C1823619 are the parameters.
